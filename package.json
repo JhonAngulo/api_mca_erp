@@ -1,0 +1,18 @@
+{
+  "name": "mca-erp",
+  "version": "0.1.0",
+  "description": "resource management system",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon src/index"
+  },
+  "author": "Jhon Angulo",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  }
+}
