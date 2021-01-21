@@ -4,28 +4,30 @@ const response = require('../../network/response')
 
 const router = express.Router()
 
-const UserService = require('./userService')
-const userService = new UserService()
+const AuthService = require('./authService')
+const authService = new AuthService()
 
 router.get('/singin', async (req, res) => {
+  const { username, password } = req.body
 
   try {
-    const list = await userService.list()
-    response.success({ req, res, message: 'User list', data: list })
+    const auth = await authService.login(username, password)
+    response.success({ req, res, message: 'Access token', data: auth })
   } catch (error) {
-    response.error({ req, res, message: 'Error when consulting the list of users' })
+    response.error({ req, res, message: 'Invalid data', status: 400 })
   }
 
 })
 
 router.get('/singout', async (req, res) => {
-  const { id } = req.params
-  try {
-    const list = await userService.get(id)    
-    response.success({ req, res, message: 'User info', data: list })
-  } catch (error) {
-    response.error({ req, res, message: 'Error when consulting the users' })
-  }
+
+  res.send('Ok')
+  // try {
+  //   const list = await userService.get(id)    
+  //   response.success({ req, res, message: 'User info', data: list })
+  // } catch (error) {
+  //   response.error({ req, res, message: 'Error when consulting the users' })
+  // }
 
 })
 

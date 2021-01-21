@@ -1,5 +1,6 @@
 'use strict'
 
+const bcrypt = require('bcrypt')
 const StoreService = require('../../store/storeService')
 const storeService = new StoreService()
 
@@ -24,15 +25,17 @@ class userService {
   async upsert(data) {
 
     const user = {
+      id: data.id,
       name: data.name,
       username: data.username
     }
-
+  
     if (data.password || data.username) {
+      const hashPassword = await bcrypt.hash(data.password, 10)
       await authService.upsert({
-        id: 1,
+        id: data.id,
         username: data.username,
-        password: data.password
+        password: hashPassword
       })
     }
 

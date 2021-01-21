@@ -1,30 +1,35 @@
 'use strict'
 
+const bcrypt = require('bcrypt')
+const token = require('./token')
 const StoreService = require('../../store/storeService')
 const storeService = new StoreService()
 
-class userService {
+class authService {
 
   constructor() {
     this.table = 'auth'
   }
 
-  async list() { 
-    return storeService.list(this.table)
-  }
+  async login(username, password) { 
+   
+    const data = await storeService.query(this.table, { username: username })
 
-  async get(id) {
-    let col = await storeService.list(this.table)
-    return col.find(item => item.id === Number(id)) || []
+    let compare = await bcrypt.compare(password, data.password)
+
+    if (compare) {
+      return token.sign(data)
+    } else {
+      throw new Error('Invalid data')
+    }
+    
   }
 
   async upsert(data) {
     return await storeService.upsert(this.table, data)
   }
 
-  remove(tabla, id) {
-    return true
-  }
+  
 }
 
-module.exports = userService
+module.exports = authService
